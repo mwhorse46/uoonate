@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/categories", {data:[{_img:{}}],fetch:{},mutations:[]});

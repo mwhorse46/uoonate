@@ -1,0 +1,37 @@
+// Variables
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: black;
+  fill: black;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  --color-light-primary: white;
+  --color-blue-primary: #0921b5;
+  --color-blue-secondary: #dfe4ff;
+  --color-light-text: var(--color-light-primary);
+  --color-blue-text: var(--color-blue-primary);
+  --font-size-base: 30px;
+  --font-weight-base: 400;
+  --line-height-base: 1.2;
+  --border-radius-base: 80px;
+  --transition-func: cubic-bezier(0.17, 0.67, 0.5, 0.71);
+  --transition-time: 100ms;
+  --transition-props: var(--transition-func) var(--transition-time);
+}
+//@Theme variables
+// Theme 1
+$color-light-primary: var(--color-light-primary);
+$color-light-text: var(--color-blue-text);
+$color-light-secondary: var(--color-blue-secondary);
+// Theme 2
+$color-blue-primary: var(--color-blue-primary);
+$color-blue-text: var(--color-light-text);
+$color-blue-secondary: var(--color-blue-secondary);
+// Assign theme
+$theme-default: $color-light-text, $color-light-primary, $color-light-secondary;
+$theme-blue: $color-blue-text, $color-blue-primary, $color-blue-secondary;

@@ -1,0 +1,37 @@
+// Mixins
+// @Theme
+@mixin color-theme($text, $bg-primary, $bg-secondary) {
+  background-color: $bg-primary;
+  color: $text;
+
+  a {
+    color: $text;
+  }
+
+  .btn {
+    &_primary {
+      border-color: $bg-secondary;
+      background-color: $bg-primary;
+      color: $text;
+      &:hover {
+        border-color: var(--color-light-primary);
+      }
+    }
+  }
+
+  svg {
+    fill: $text;
+  }
+  .layout__footer,
+  .layout__header {
+    background-color: $bg-primary;
+  }
+}
+.theme {
+  &_light {
+    @include color-theme($theme-default...);
+  }
+  &_blue {
+    @include color-theme($theme-blue...);
+  }
+}
