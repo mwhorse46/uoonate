@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/de/Checkout/Shipping", {data:[{_img:{}},{}],fetch:{},mutations:[]});

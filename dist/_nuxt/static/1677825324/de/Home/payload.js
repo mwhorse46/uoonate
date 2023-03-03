@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/de/Home", {data:[{_img:{}}],fetch:{},mutations:[]});
