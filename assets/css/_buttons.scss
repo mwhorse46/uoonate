@@ -17,5 +17,10 @@
     font-weight: var(--font-weight-base);
     flex: none;
     transition: border var(--transition-props);
+    color: var(--c-text);
+    background-color: transparent;
+    .sf-price__regular {
+      font-size: var(--font-size-base);
+    }
   }
 }

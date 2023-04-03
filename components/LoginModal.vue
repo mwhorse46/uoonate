@@ -173,6 +173,9 @@ v-e2e="'login-modal-submit'"
             <div v-if="error.register">
               {{ error.register }}
             </div>
+            <div class="recaptcha-div">
+              <recaptcha/>
+            </div>            
             <SfButton
               type="submit"
               class="sf-button--full-width form__button"
@@ -204,7 +207,7 @@ import { useUiState, useUiNotification } from '~/composables';
 
 extend('email', {
   ...email,
-  message: 'Invalid email'
+  message: "Please include an '@' in the email address"
 });
 
 extend('required', {
@@ -337,7 +340,7 @@ export default {
       isThankYouAfterForgotten.value = false;
     };
 
-    const handleRegister = () => handleForm(register)();
+    // const handleRegister = () => handleForm(register)();
 
     const handleLogin = () => handleForm(login)();
 
@@ -362,7 +365,8 @@ export default {
       isLoginModalOpen,
       toggleLoginModal,
       handleLogin,
-      handleRegister,
+      register,
+      // handleRegister,
       setIsLoginValue,
       isForgotten,
       setIsForgottenValue,
@@ -372,9 +376,25 @@ export default {
       closeModal,
       isThankYouAfterForgotten,
       userEmail,
-      barTitle
+      barTitle,
+      handleForm
     };
-  }
+  },
+  methods: {
+    async handleRegister() {
+      try {
+        // const token = await this.$recaptcha.getResponse();   //mhch
+        // console.log('ReCaptcha token:', token)
+
+        this.handleForm(this.register)();
+
+        // at the end you need to reset recaptcha
+        await this.$recaptcha.reset()
+      } catch (error) {
+        alert("You can't register in this site!");
+      }
+    },
+  },
 };
 </script>
 
@@ -426,5 +446,8 @@ export default {
       font-weight: var(--font-weight--semibold);
     }
   }
+}
+.recaptcha-div{
+  margin-bottom: 20px;
 }
 </style>

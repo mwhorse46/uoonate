@@ -1,7 +1,8 @@
 <template>
   <div id="home">
-    <LazyHydrate when-visible> <p>Homepage</p></LazyHydrate>
-  </div>
+    <LazyHydrate when-visible> <p class="mt-0">Homepage</p></LazyHydrate>
+    <AppFooter />
+  </div>  
 </template>
 <script type="module">
 import {
@@ -17,9 +18,12 @@ import MobileStoreBanner from '~/components/MobileStoreBanner.vue';
 import RelatedProducts from '~/components/RelatedProducts.vue';
 import { onSSR } from '@vue-storefront/core';
 
+import AppFooter from '~/components/AppFooter.vue';
+
 export default {
   name: 'Home',
   components: {
+    AppFooter,
     SfHero,
     RelatedProducts,
     SfBanner,
@@ -33,7 +37,7 @@ export default {
       products: relatedProducts,
       search: productsSearch,
       loading: productsLoading
-    } = useProduct('relatedProducts');
+    } = useProduct('products');
     const { cart, addItem: addToCart, isInCart } = useCart();
 
     onSSR(async () => {

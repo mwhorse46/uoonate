@@ -3,6 +3,7 @@ import webpack from 'webpack';
 const platformENV = process.env.NODE_ENV !== 'production' ? 'http' : 'https';
 const config = {
   target: 'server',
+  buildModules: [['@edgio/nuxt/module', { edgioSourceMaps: true }]],
   server: {
     port: process.env.APP_PORT || 3001,
     host: '0.0.0.0'
@@ -10,7 +11,12 @@ const config = {
   publicRuntimeConfig: {
     appKey: 'vsf2spcon',
     appVersion: Date.now(),
-    middlewareUrl: `${platformENV}://${process.env.BASE_URL}/api/`
+    middlewareUrl: `${platformENV}://${process.env.BASE_URL}/api/`,
+    recaptcha: {
+      /* reCAPTCHA options */
+      siteKey: process.env.SITE_KEY, // for example
+      version: 2,
+    }
   },
   privateRuntimeConfig: {
     storeURL: process.env.SHOPIFY_DOMAIN,
@@ -87,12 +93,22 @@ const config = {
     '@vue-storefront/middleware/nuxt',
     '@nuxtjs/sitemap',
     './modules/cms/runtime',
-    '@nuxt/image'
+    '@nuxt/image',
+    "@nuxtjs/recaptcha",
+    "nuxt-newsletter"
   ],
-  sitemap: {
-    hostname: 'https://localhost/uoonate',
-    gzip: true,
-    exclude: ['/exampleurl']
+  
+  buttondown: {
+    apiKey: process.env.BUTTONDOWN_API_KEY,
+    component: true // optional
+  },
+  recaptcha: {
+    // hideBadge: Number, // Hide badge element (v3 & v2 via size=invisible)
+    // language: String,   // Recaptcha language (v2)
+    // mode: String,       // Mode: 'base', 'enterprise'
+    // siteKey: String,    // Site key for requests
+    // version: Number,    // Version
+    // size: String        // Size: 'compact', 'normal', 'invisible' (v2)
   },
   device: {
     refreshOnResize: true

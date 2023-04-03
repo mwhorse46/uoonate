@@ -1,0 +1,41 @@
+@import '~@storefront-ui/vue/styles';
+@import '@/assets/sass/_variables.scss';
+@import '@/assets/sass/_mixins.scss';
+
+#register-page {
+  font-family: var(--font-family--primary);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  @include for-desktop {
+    max-width: 1240px;
+    margin: auto;
+  }
+  .register-form {
+    padding: 1rem;
+    min-width: 400px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    @include for-mobile {
+      min-width: 300px;
+    }
+
+    .register-header {
+      text-align: center;
+    }
+    .register-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 1.5rem;
+      .sf-button {
+        margin: 1rem;
+      }
+    }
+    .sf-input {
+      margin-top: 2rem !important;
+    }
+  }
+}

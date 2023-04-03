@@ -276,8 +276,6 @@ export default {
 </style> -->
 <style scoped lang="scss">
 .sf-header {
-  &__wrapper {
-  }
   &__header {
     display: grid;
     grid-template-columns: 1fr 100px 1fr;
@@ -285,6 +283,7 @@ export default {
     min-height: 78px;
     align-items: center;
     padding: 0 16px;
+    max-width: 100%;
   }
 
   &__actions {
@@ -302,6 +301,9 @@ export default {
   &__aside {
     display: flex;
     justify-content: flex-end;
+  }
+  .sf-header__action {
+    color: var(--c-text);
   }
   .sf-link {
     --link-color: red;

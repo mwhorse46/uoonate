@@ -8,7 +8,8 @@ const state = reactive({
   isFilterSidebarOpen: false,
   isNavigationSidebarOpen: false,
   isMobileMenuOpen: false,
-  articlesPerPage: '5'
+  articlesPerPage: '5',
+  isNewsletterModalOpen: false
 });
 
 const useUiState = () => {
@@ -52,6 +53,11 @@ const useUiState = () => {
     state.articlesPerPage = perPage
   }
 
+  const isNewsletterModalOpen = computed(() => state.isNewsletterModalOpen);
+  const toggleNewsletterModal = () => {
+    state.isNewsletterModalOpen = !state.isNewsletterModalOpen;
+  };
+
   return {
     isCartSidebarOpen,
     isWishlistSidebarOpen,
@@ -68,7 +74,9 @@ const useUiState = () => {
     toggleFilterSidebar,
     toggleNavigationSidebar,
     articlesPerPage,
-    setArticlesPerPage
+    setArticlesPerPage,
+    toggleNewsletterModal,
+    isNewsletterModalOpen
   };
 };
 

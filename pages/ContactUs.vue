@@ -17,10 +17,10 @@ export default {
       loading: contextsLoading,
       content,
       search
-    } = useContent('pageContents');
+    } = useContent('pages');
 
     onSSR(async () => {
-      await search({ handle: 'contact', ContentType: 'page' });
+      await search({ handle: 'contact-us', ContentType: 'page' });
     });
 
     return {

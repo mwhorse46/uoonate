@@ -1,154 +1,116 @@
 <template>
-  <SfFooter
-    :column="4"
-    multiple
-    class="footer"
-  >
-    <SfFooterColumn :title="$t('About us')">
-      <SfList>
-        <SfListItem
-          v-for="item in aboutUs"
-          :key="item"
-        >
-          <SfMenuItem
-            :label="$t(item)"
-          />
-        </SfListItem>
-      </SfList>
-    </SfFooterColumn>
-    <SfFooterColumn :title="$t('Departments')">
-      <SfList>
-        <SfListItem
-          v-for="item in departments"
-          :key="item"
-        >
-          <SfMenuItem
-            :label="$t(item)"
-          />
-        </SfListItem>
-      </SfList>
-    </SfFooterColumn>
-    <SfFooterColumn :title="$t('Help')">
-      <SfList>
-        <SfListItem
-          v-for="item in help"
-          :key="item"
-        >
-          <SfMenuItem
-            :label="$t(item)"
-          />
-        </SfListItem>
-      </SfList>
-    </SfFooterColumn>
-    <SfFooterColumn :title="$t('Payment & Delivery')">
-      <SfList>
-        <SfListItem
-          v-for="item in paymentsDelivery"
-          :key="item"
-        >
-          <SfMenuItem
-            :label="$t(item)"
-          />
-        </SfListItem>
-      </SfList>
-    </SfFooterColumn>
-    <SfFooterColumn :title="$t('Social')">
-      <div class="footer__socials">
-        <SfImage
-          v-for="item in social"
-          :key="item"
-          class="footer__social-image"
-          :src="addBasePath('/icons/'+item+'.webp')"
-          :alt="item"
-          :width="32"
-          :height="32"
-        />
-      </div>
-    </SfFooterColumn>
-  </SfFooter>
+  <div class="d-flex footer-parent align-items-center">
+    <SfFooter :column="2" multiple class="footer">
+      <SfFooterColumn :title="this.$t('Title 1')">
+        <SfList>
+          <SfListItem v-for="(item, a) in title1" :key="a">
+            <SfMenuItem :label="item" />
+          </SfListItem>
+        </SfList>
+      </SfFooterColumn>
+      <SfFooterColumn :title="this.$t('Title 2')">
+        <SfList>
+          <SfListItem v-for="(item, a) in title2" :key="a">
+            <SfMenuItem :label="$t(item)" />
+          </SfListItem>
+        </SfList>
+      </SfFooterColumn>
+      <SfFooterColumn class="py-0 hidden-btn">
+        <SfList>
+          <SfListItem v-for="(item, a) in copyRight" :key="a">
+            <SfMenuItem :label="$t(item)" />
+          </SfListItem>
+        </SfList>
+      </SfFooterColumn>
+      <SfFooterColumn class="py-0 hidden-btn">
+        <SfList>
+          <SfListItem v-for="(item, a) in copyRightLinks" :key="a">
+            <SfMenuItem :label="item.title" :link="localePath(item.link)" />
+          </SfListItem>
+        </SfList>
+      </SfFooterColumn>      
+    </SfFooter>
+    <div>
+      <NewsletterForm class="news-part"/>
+    </div>
+  </div>  
 </template>
-
 <script>
 import {
   SfFooter, SfList, SfImage, SfMenuItem,
 } from '@storefront-ui/vue';
-import { addBasePath } from '@vue-storefront/core';
+import NewsletterForm from './NewsletterForm.vue';
 export default {
   components: {
     SfFooter,
     SfList,
     SfImage,
     SfMenuItem,
-  },
-  setup() {
-    return {
-      addBasePath,
-    };
+    NewsletterForm
   },
   data() {
     return {
-      aboutUs: [
-        this.$t('Who we are'),
-        this.$t('Quality in the details'),
-        this.$t('Customer Reviews')
+      copyRight: [this.$t("© Uoona. All Rights Reserved.")],
+      copyRightLinks: [
+        {title: this.$t("About"), link: "/About"}, 
+        {title: this.$t("Terms"), link: "/Termsandconditions"}
       ],
-      departments: [
-        this.$t('Women fashion'),
-        this.$t('Men Fashion'),
-        this.$t('Kidswear'),
-        this.$t('Home')
-      ],
-      help: [
-        this.$t('Customer service'),
-        this.$t('Size guide'),
-        this.$t('Contact us')
-      ],
-      paymentsDelivery: [this.$t('Purchase terms'), this.$t('Guarantee')],
-      social: ['facebook', 'pinterest', 'google', 'twitter', 'youtube'],
-      isMobile: false,
-      desktopMin: 1024
+      title1: [this.$t("Link 1"), this.$t("Link 2")],
+      title2: [this.$t("Link 3"), this.$t("Link 4")],
     };
   },
 };
 </script>
 
-<style lang="scss">
-.footer {
-  margin-bottom: var(--spacer-xl);
-  @include for-desktop {
-    margin-bottom: 0;
-  }
-  &__socials {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 auto var(--spacer-lg);
-    padding: var(--spacer-base) var(--spacer-xl);
-    @include for-desktop {
-      justify-content: flex-start;
-      padding: var(--spacer-xs) 0;
-      margin: 0 auto;
-    }
-  }
-  &__social-image {
-    margin: 0 var(--spacer-2xs) 0 0;
-    background-color: #fff;
-    border-radius: 100%;
-    --image-width: 32px;
-    --image-height: 32px;
-  }
+<style scoped lang="scss">
+.footer-parent {
+  padding: 0px 5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #1d1f22;
 }
 .sf-footer {
-  @include for-desktop {
-    border-top: var(--spacer-xs) solid var(--c-primary);
-    padding-bottom: 0;
-    margin-top: var(--spacer-2xl);
+  padding: 0px !important;
+}
+.footer {  
+  width: 70%;
+  &__row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) max-content;
+    padding: 4rem var(--spacer-sm) 0;
+    grid-row-gap: 24px;
   }
-  &__container {
-    margin: var(--spacer-sm);
-    @include for-desktop {
-      max-width: 69rem;
-      margin: 0 auto;
+  .sf-footer-column {
+    margin: 0px;
+    margin: auto;
+  }
+  .footer__col {
+    margin: 0;
+  }
+  &-col-title {
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.38em;
+    line-height: 20px;
+    display: block;
+    color: #999999;
+    margin-bottom: 16px;
+  }
+  &-links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  &-link {
+    &:hover {
     }
   }
+}
+
+.news-part {
 }
 </style>

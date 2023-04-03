@@ -1,0 +1,73 @@
+@import '~@storefront-ui/vue/styles';
+@import '@/assets/sass/_variables.scss';
+@import '@/assets/sass/_mixins.scss';
+
+#login-page {
+  font-family: var(--font-family--primary);
+  margin: 3rem auto 6rem;
+  max-width: 65rem;
+  box-sizing: border-box;
+
+  .page-header {
+    text-align: center;
+  }
+
+  .login-row {
+    margin: 0 auto;
+    max-width: 85rem;
+    width: 100%;
+    .customer-form {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: row;
+
+      @media (max-width: 801px) {
+        flex-direction: column;
+      }
+
+      .login-form {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        width: 100%;
+
+        @media (max-width: 801px) {
+          margin-bottom: 1rem;
+        }
+      }
+
+      .new-customer-form {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        width: 100%;
+
+        .panel {
+          position: relative;
+          .panel-header {
+            background-color: #e5e5e5;
+            margin: 0;
+            padding: 1rem 1rem 0;
+            .panel-title {
+              line-height: 1.5;
+              margin: 0;
+              font-size: 20px;
+            }
+          }
+          .panel-body {
+            margin-bottom: 1.5rem;
+            padding: 1rem 2rem 1.5rem;
+            background: #e5e5e5;
+            .new-customer-fact-list {
+              margin-left: 1rem;
+              margin-bottom: 1rem;
+              font-size: 15px;
+              color: gray;
+              > li {
+                line-height: 20px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

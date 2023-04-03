@@ -248,9 +248,13 @@ export default {
         });
     }
     const handleCheckout = (checkoutUrl) => {
+      // console.error("checkout : ", checkoutUrl);
       setTimeout(() => {
         window.location.href = checkoutUrl;
       }, 300)
+      // setTimeout(() => {
+      //   window.location.href = '/checkout/Shipping';
+      // }, 300)
     }
     const updateQuantity = debounce(async ({ product, quantity }) => {
       await updateItemQty({ product, quantity });

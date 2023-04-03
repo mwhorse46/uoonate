@@ -1,32 +1,38 @@
 <template>
   <div>
-    Terms &amp; Conditions
-    <!-- Page content ? -->
-    {{ content }}
+    <h1>Terms</h1>
+    <div v-html="content.body" />
+    <AppFooter />
   </div>
 </template>
-
+  
 <script>
-import { computed, defineComponent } from '@nuxtjs/composition-api';
-import { useContent } from '@vue-storefront/shopify';
-import { onSSR } from '@vue-storefront/core';
+  import { useContent } from '@vue-storefront/shopify';
+  import { onSSR } from '@vue-storefront/core';
+  import AppFooter from '~/components/AppFooter.vue';
 
-export default defineComponent({
-  setup() {
-    const { search, content } = useContent('pageContents');
+  export default {
+    name: 'Terms',
+    components: {
+      AppFooter,
+    },
+    transition: 'fade',
+    setup() {
+      const {
+        loading: contextsLoading,
+        content,
+        search
+      } = useContent();
 
-    onSSR(async () => {
-      await search(
-        { handle: 'TermsAndConditions', ContentType: 'page' },
-        content
-      );
-    });
+      onSSR(async () => {
+        await search({ handle: 'terms', contentType: 'page' }); // mhch
+      });
 
-    return {
-      content,
-    };
-  },
-});
+      return {
+        content,
+        contextsLoading
+      };
+    }
+  };
 </script>
-
-<style lang="scss"></style>
+  

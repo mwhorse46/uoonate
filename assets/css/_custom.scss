@@ -1,0 +1,25 @@
+.sf-color {
+  width: 32px;
+  height: 48px;
+  border-radius: 50%;
+  transform: rotate(45deg);
+  &.is-active,
+  &:hover {
+    transform: rotate(45deg);
+    border: 2px solid black;
+  }
+}
+
+.product__color-label {
+  @include sc-reader();
+}
+.sf-image {
+  width: var(--_image-width);
+  height: var(--_image-height);
+}
+.sr-reader {
+  @include sc-reader();
+}
+a {
+  transition: all 0.3s ease;
+}

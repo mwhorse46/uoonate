@@ -18,21 +18,12 @@
         </SfSteps>
         <nuxt-child v-else />
       </div>
-      <div
-        v-if="!isThankYou"
-        class="checkout__aside desktop-only"
-      >
-        <transition name="fade">
-          <CartPreview key="order-summary" />
-        </transition>
-      </div>
     </div>
   </div>
 </template>
 <script>
 
 import { SfSteps, SfButton } from '@storefront-ui/vue';
-import CartPreview from '~/components/Checkout/CartPreview';
 import { computed, useRoute, useRouter } from '@nuxtjs/composition-api';
 
 const STEPS = {
@@ -46,7 +37,6 @@ export default {
   components: {
     SfButton,
     SfSteps,
-    CartPreview
   },
   setup() {
     const route = useRoute();

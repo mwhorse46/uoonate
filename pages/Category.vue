@@ -402,6 +402,10 @@ export default {
     SfImage
   },
   transition: 'fade',
+  mounted() {
+    console.error("test", this.products);
+    this.$store.commit('products/setProducts', this.products);
+  },
   setup(_, context) {
     const th = useUiHelpers();
     const uiState = useUiState();
@@ -741,7 +745,7 @@ export default {
   }
 }
 ::v-deep .sf-sidebar__aside {
-  --sidebar-z-index: 3;
+  --sidebar-z-index: 1000;
 }
 .filters {
   &__title {

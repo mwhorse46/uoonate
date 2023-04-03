@@ -12,60 +12,68 @@
     <client-only>
       <LoginModal />
     </client-only>
+    <client-only>
+      <NewsletterModal />
+    </client-only>
     <LazyHydrate when-visible>
       <Notification />
     </LazyHydrate>
     <!-- <TopBar class="desktop-only" /> -->
-    <AppHeader
-      :cart-total-items="getCartTotalItems"
-      :is-user-authenticated="isAuthenticated"
-    />
-    <div id="layout">
-      <nuxt :key="route.fullPath" />
+    <div>
+      <AppHeader
+        :cart-total-items="getCartTotalItems"
+        :is-user-authenticated="isAuthenticated"
+      />
+      <div id="layout" :class="color">
+        <nuxt :key="route.fullPath" />
+      </div>
     </div>
-    <!-- <LoadWhenVisible>
-      <AppFooter />
-    </LoadWhenVisible> -->
   </div>
 </template>
 
 <script>
-import AppHeader from '~/components/AppHeader.vue';
-import TopBar from '~/components/TopBar.vue';
-import LazyHydrate from 'vue-lazy-hydration';
+import AppHeader from "~/components/AppHeader.vue";
+import TopBar from "~/components/TopBar.vue";
+import LazyHydrate from "vue-lazy-hydration";
 import {
   useUser,
   cartGetters,
   useCart,
-  userGetters
-} from '@vue-storefront/shopify';
+  userGetters,
+} from "@vue-storefront/shopify";
 import {
   computed,
   onBeforeMount,
   provide,
   useRoute,
-  useContext
-} from '@nuxtjs/composition-api';
-import LoadWhenVisible from '~/components/utils/LoadWhenVisible';
+  useContext,
+} from "@nuxtjs/composition-api";
+import LoadWhenVisible from "~/components/utils/LoadWhenVisible";
 export default {
-  name: 'DefaultLayout',
+  name: "DefaultLayout",
   components: {
     LazyHydrate,
     TopBar,
     AppHeader,
     BottomNavigation: () =>
-      import(/* webpackPrefetch: true */ '~/components/BottomNavigation.vue'),
-    AppFooter: () =>
-      import(/* webpackPrefetch: true */ '~/components/AppFooter.vue'),
+      import(/* webpackPrefetch: true */ "~/components/BottomNavigation.vue"),
     CartSidebar: () =>
-      import(/* webpackPrefetch: true */ '~/components/CartSidebar.vue'),
+      import(/* webpackPrefetch: true */ "~/components/CartSidebar.vue"),
     WishlistSidebar: () =>
-      import(/* webpackPrefetch: true */ '~/components/WishlistSidebar.vue'),
+      import(/* webpackPrefetch: true */ "~/components/WishlistSidebar.vue"),
     LoginModal: () =>
-      import(/* webpackPrefetch: true */ '~/components/LoginModal.vue'),
+      import(/* webpackPrefetch: true */ "~/components/LoginModal.vue"),
+    NewsletterModal: () =>
+      import(/* webpackPrefetch: true */ "~/components/NewsletterModal.vue"),
     Notification: () =>
-      import(/* webpackPrefetch: true */ '~/components/Notification'),
-    LoadWhenVisible
+      import(/* webpackPrefetch: true */ "~/components/Notification"),
+    LoadWhenVisible,
+  },
+  computed: {
+    color() {
+      return this.$store.getters["colors/getColorValue"];
+      // return this.$store.state.colors.colorIndex
+    },
   },
   setup() {
     const route = useRoute();
@@ -78,7 +86,7 @@ export default {
     const isAuthenticated = computed(
       () => !!userGetters.getFirstName(userInfo.value)
     );
-    provide('currentCart', cart);
+    provide("currentCart", cart);
     onBeforeMount(async () => {
       await loadUser();
       await loadCart().then(() => {
@@ -91,20 +99,22 @@ export default {
     return {
       getCartTotalItems,
       isAuthenticated,
-      route
+      route,
     };
-  }
+  },
 };
 </script>
 
 <style lang="scss">
-@import '~@storefront-ui/vue/styles';
+@import "~@storefront-ui/vue/styles";
 
 #layout {
   box-sizing: border-box;
+  min-height: calc(100vh - 308px);
   @include for-desktop {
-    max-width: 1240px;
-    margin: auto;
+    max-width: 100%;
+    margin: 0;
+    padding: 0 var(--spacer-sm);
   }
 }
 
@@ -123,7 +133,7 @@ html {
 body {
   overflow-x: hidden;
   color: var(--c-text);
-  font-size: var(--font-size--base);
+  font-size: var(--h3-font-size);
   font-family: var(--font-family--primary);
   margin: 0;
   padding: 0;

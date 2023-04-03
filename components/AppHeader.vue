@@ -2,11 +2,10 @@
   <div>
     <SfHeader
       data-cy="app-header"
-      :search-value="term"
       :cart-items-qty="cartTotalItems"
       :account-icon="accountIcon"
       class="sf-header--has-mobile-search"
-      :class="{ 'header-on-top': isSearchOpen }"
+      :class="color"
       @click:cart="toggleCartSidebar"
       @click:wishlist="toggleWishlistSidebar"
       @click:account="
@@ -14,8 +13,6 @@
           ? $router.push(localePath({ name: 'my-account' }))
           : toggleLoginModal()
       "
-      @enter:search="changeSearchTerm"
-      @change:search="(p) => (term = p)"
     >
       <template v-if="menus.length > 0" #navigation>
         <div class="navigation-wrapper">
@@ -25,7 +22,7 @@
             class="nav-item"
             :data-cy="'app-header-url_' + menu.handle"
             :label="menu.title"
-            :link="menu.link"
+            :link="localePath(getMenuPath(menu))"
           />
         </div>
       </template>
@@ -33,26 +30,18 @@
       <!-- TODO: add mobile view buttons after SFUI team PR -->
       <template #logo>
         <nuxt-link :to="localePath('/')" class="sf-header__logo">
-          <!-- <SfImage
-            src="/icons/logo.webp"
-            alt="Vue Storefront Next"
-            class="sf-header__logo-image"
-            :width="34"
-            :height="34"
-          /> -->
           <Logo />
         </nuxt-link>
       </template>
-
-      <!-- <template #aside>
-         <LocaleSelector class="smartphone-only" /> 
-      </template>-->
+      <template #search class="d-none">
+        <div></div>
+      </template>
       <template #header-icons>
         <div class="sf-header__icons">
-          <!-- <SfButton
+          <SfButton
             v-if="isUserAuthenticated"
             class="sf-button--pure sf-header__action"
-            @click="$router.push(localePath({ name: 'my-account' }))"
+            @click="$router.push(localePath({name:'my-account'}))"
           >
             <SfIcon :icon="accountIcon" size="1.25rem" />
           </SfButton>
@@ -61,8 +50,8 @@
             class="sf-button--pure sf-header__action"
             @click="toggleLoginModal()"
           >
-            <SfIcon :icon="accountIcon" size="1.25rem" />
-          </SfButton> -->
+          <SfIcon :icon="accountIcon" size="1.25rem" />
+          </SfButton>
           <SfButton
             v-e2e="'app-header-cart'"
             class="sf-button--pure sf-header__action"
@@ -73,44 +62,23 @@
             <SfBadge
               v-if="cartTotalItems"
               class="sf-badge--number cart-badge"
-              >{{ cartTotalItems }}</SfBadge
-            >
+              >{{ cartTotalItems }}
+            </SfBadge>
           </SfButton>
         </div>
       </template>
-
-      <!-- <template #search>
-        <SfSearchBar
-          placeholder="Search for items"
-          :value="term"
-          :icon="{ size: '1.25rem', color: '#43464E' }"
-          aria-label="Search"
-          @keydown.esc="closeSearch"
-          @keydown.tab="hideSearch"
-          @input="handleSearch"
-          @focus="isSearchOpen = true"
-        ></SfSearchBar>
-      </template> -->
     </SfHeader>
-    <!-- <SearchResults
-      v-if="isSearchOpen"
-      :visible="isSearchOpen"
-      :result="searchResults"
-    />
-    <SfOverlay :visible="isSearchOpen" @click="isSearchOpen = false" /> -->
   </div>
 </template>
 
 <script type="module">
 import {
+  SfImage,
   SfButton,
-  SfBadge
-  // SfImage,
-  // SfSearchBar,
-  // SfIcon,
-  // SfOverlay
+  SfBadge,
+  SfIcon,
+  SfOverlay
 } from '@storefront-ui/vue';
-import SfHeader from './SfHeader/SfHeader.vue';
 import Logo from './OBrand/Logo.vue';
 import debounce from 'lodash/debounce';
 import { onSSR } from '@vue-storefront/core';
@@ -122,8 +90,7 @@ import {
   useContext
 } from '@nuxtjs/composition-api';
 import { useUiHelpers, useUiState } from '~/composables';
-// import SearchResultsComp from './SearchResults.vue';
-// import LocaleSelector from './LocaleSelector.vue';
+import SfHeader from './SfHeader/SfHeader.vue';
 
 import {
   searchGetters,
@@ -134,16 +101,13 @@ import {
 
 export default {
   components: {
-    SfHeader,
+    SfImage,
+    SfIcon,
     SfButton,
+    SfOverlay,
     SfBadge,
-    Logo
-    // SearchResults: SearchResultsComp,
-    // SfImage,
-    // SfIcon,
-    // LocaleSelector,
-    // SfOverlay,
-    // SfSearchBar,
+    Logo,
+    SfHeader
   },
   props: {
     cartTotalItems: {
@@ -152,6 +116,12 @@ export default {
     },
     isUserAuthenticated: Boolean
   },
+  computed: {
+		color() {
+      return this.$store.getters['colors/getColorValue'];
+			// return this.$store.state.colors.colorIndex
+		},
+	},
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   setup(props) {
     const context = useContext();
@@ -228,11 +198,7 @@ export default {
     ]);
 
     const getMenuPath = (menu) => {
-      // if (menu.id === 'blogs') {
-      //   return { name: 'blogs' };
-      // }
-
-      // return { name: 'category', params: { slug_1: menu.handle } };
+      return menu.link;
     };
 
     return {
@@ -249,7 +215,7 @@ export default {
       curCatSlug,
       searchResults,
       menus,
-      isSearchOpen
+      isSearchOpen,
     };
   }
 };
@@ -263,6 +229,15 @@ export default {
   }
   &__logo-image {
     height: 100%;
+  }  
+  &__header {
+    min-width: 90%;
+  }
+}
+.sf-header__wrapper {
+  background-color: red !important;
+  & .sf-search-bar {
+    display: none;
   }
 }
 .header-on-top {
