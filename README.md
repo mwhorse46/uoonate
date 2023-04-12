@@ -1,4 +1,4 @@
-# Vue Storefron Shopify Template
+# Vue Storefron Shopify  Template
 
 ### Stay connected
 
