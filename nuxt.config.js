@@ -3,9 +3,8 @@ import webpack from 'webpack';
 const platformENV = process.env.NODE_ENV !== 'production' ? 'http' : 'https';
 const config = {
   target: 'server',
-  buildModules: [['@edgio/nuxt/module', { edgioSourceMaps: true }]],
   server: {
-    port: process.env.APP_PORT || 3001,
+    port: process.env.APP_PORT || 80,
     host: '0.0.0.0'
   },
   publicRuntimeConfig: {
@@ -94,13 +93,11 @@ const config = {
     '@nuxtjs/sitemap',
     './modules/cms/runtime',
     '@nuxt/image',
-    "@nuxtjs/recaptcha",
-    "nuxt-newsletter"
+    "@nuxtjs/recaptcha"
   ],
-  
-  buttondown: {
-    apiKey: process.env.BUTTONDOWN_API_KEY,
-    component: true // optional
+  sitemap: {
+      // options
+      hostname: `${platformENV}://${process.env.BASE_URL}`,
   },
   recaptcha: {
     // hideBadge: Number, // Hide badge element (v3 & v2 via size=invisible)

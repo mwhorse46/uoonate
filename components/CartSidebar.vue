@@ -80,9 +80,17 @@
           </div>
         </div>
       </transition>
+      <div v-if="cart">
+        <div class="d-flex align-items-center">
+          <SfIcon icon="filter2"/>
+          <p>Order Special Instructions</p>
+        </div>        
+        <textarea class="order-notes" v-model="cart.note"></textarea>
+      </div>
       <template #content-bottom>
         <transition name="sf-fade">
           <div v-if="totalItems">
+            <!--<button @click="debugAlert(cart)">Click me</button>-->
             <div v-if="!appliedCoupon" class="coupon-form-wrapper">
               <SfInput
                 v-model="couponcode"
@@ -284,8 +292,16 @@ export default {
       errorMsg,
       appliedCoupon,
       handleRemoveCoupon,
-      displayDiscountStr
+      displayDiscountStr,
+      cart
     };
+  },
+  methods: {
+    debugAlert(logValue) {
+      console.error("sdfsdfsdf : ", logValue);
+      // logValue.note = "mm";
+      alert(logValue);
+    },
   }
 };
 </script>
@@ -303,6 +319,12 @@ export default {
 }
 .cart-summary {
   margin-top: var(--spacer-xl);
+}
+
+.order-notes {
+  width: 100%;
+  min-height: 100px;
+  font-size: 1.2rem;
 }
 .my-cart {
   flex: 1;

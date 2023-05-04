@@ -134,7 +134,7 @@ export default {
 		},
 	},
   setup() {
-    const { orders, search, loading } = useUserOrders();
+    // const { orders, search, loading } = useUserOrders();
     const { addItem: addItemToCart, isInCart, cart: currentCart, load } = useCart();
     const { send: sendNotification } = useUiNotification();
 
@@ -153,7 +153,7 @@ export default {
     onSSR(async () => {
       await load();
       // await loadUser();
-      await search();
+      // await search();
     });
 
     return {
@@ -165,7 +165,7 @@ export default {
       getStockCount,
       getSimpleId,
       cartProducts: computed(() => cartGetters.getItems(currentCart.value)),
-      orders: computed(() => orders ? orders.value : [])
+      // orders: computed(() => orders ? orders.value : [])
     };
   },
   data() {

@@ -1,11 +1,16 @@
 {
   "name": "@vue-storefront/shopify-theme",
   "version": "1.1.2",
+  "engines": {
+    "node": "16.x",
+    "yarn": "1.22.19"
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build --modern=client",
     "build:analyze": "nuxt build -a --modern=client",
-    "start": "nuxt start --modern=client",
+    "start": "nuxt",
+    "heroku-postbuild": "npm run build && npm run generate",
     "generate": "nuxt generate",
     "test": "jest",
     "test:e2e:open": "cypress open --config-file tests/e2e/cypress.json",
@@ -35,6 +40,7 @@
     "nuxt-newsletter": "^0.2.0",
     "nuxt-shopify": "^1.16.2",
     "vee-validate": "^3.2.3",
+    "vue-cookie-accept-decline": "5.4.0",
     "vue-scrollto": "^2.17.1"
   },
   "devDependencies": {

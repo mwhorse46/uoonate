@@ -88,22 +88,10 @@
               v-e2e="'category-product-card'"
               :style="{ '--index': i }"
               :title="productGetters.getName(product)"
-              :image="productGetters.getCoverImage(product)"
-              :image-width="$device.isDesktopOrTablet ? 212 : 154"
-              :image-height="$device.isDesktopOrTablet ? 320 : 232"
               :regular-price="
                 $n(productGetters.getPrice(product).regular, 'currency')
               "
-              :special-price="
-                productGetters.getPrice(product).special &&
-                $n(productGetters.getPrice(product).special, 'currency')
-              "
-              :max-rating="5"
-              :score-rating="productGetters.getAverageRating(product)"
-              :show-add-to-cart-button="true"
-              :is-on-wishlist="false"
               :is-added-to-cart="isInCart({ product, currentCart })"
-              :add-to-cart-disabled="!productGetters.getStockStatus(product)"
               :link="
                 localePath(
                   `/p/${productGetters
@@ -113,13 +101,30 @@
                     .pop()}/${productGetters.getSlug(product)}`
                 )
               "
-              :wishlist-icon="false"
+              :image="productGetters.getCoverImage(product)"
               class="products__product-card"
               @click:add-to-cart="
                 handleAddToCart({ product, quantity: 1, currentCart })
               "
             >
-              <template #image="imageSlotProps">
+              <template #badge>
+                <div
+                  :class="[
+                    'products__badge',
+                    [
+                      product.totalInventory > 0
+                        ? 'products__badge-hide'
+                        : null,
+                    ],
+                  ]"
+                >
+                  <div class="products__badge-status">
+                    {{ showBadge(product) }}
+                  </div>
+                </div>
+              </template>
+
+              <!-- <template #image="imageSlotProps">
                 <SfButton
                   :link="imageSlotProps.link"
                   aria-label="Go To Product"
@@ -147,10 +152,19 @@
                     class="sf-product-card__image lol"
                   />
                 </SfButton>
-              </template>
+              </template> -->
             </SfProductCard>
+
+            <!-- :add-to-cart-disabled="!productGetters.getStockStatus(product)" -->
+            <!-- :max-rating="5" -->
+            <!-- :score-rating="productGetters.getAverageRating(product)" -->
+            <!-- :show-add-to-cart-button="false" -->
+
+            <!-- :image-width="$device.isDesktopOrTablet ? 212 : 154" -->
+            <!-- :image-height="$device.isDesktopOrTablet ? 320 : 232" -->
+            <!--               :is-on-wishlist="false" -->
           </transition-group>
-          <transition-group
+          <!-- <transition-group
             v-else
             appear
             name="products__slide"
@@ -236,46 +250,46 @@
                       product,
                       quantity: Number(
                         productsQuantity[productData.getId(product)] || 1
-                      )
+                      ),
                     })
                   "
                 />
               </template>
             </SfProductCardHorizontal>
-          </transition-group>
-          <SfPagination
-            v-if="!loading"
-            v-show="pagination.totalPages > 1"
-            data-cy="category-pagination"
-            class="products__pagination desktop-only"
-            :current="pagination.currentPage"
-            :total="pagination.totalPages"
-            :visible="5"
-          />
-          <div
-            v-show="pagination.totalPages > 1"
-            class="products__show-on-page"
-          >
-            <span class="products__show-on-page__label">Show on page:</span>
-            <SfSelect
-              :value="pagination.itemsPerPage.toString()"
-              class="products__items-per-page"
-              @input="th.changeItemsPerPage"
+          </transition-group> -->
+          <!-- <SfPagination
+              v-if="!loading"
+              v-show="pagination.totalPages > 1"
+              data-cy="category-pagination"
+              class="products__pagination desktop-only"
+              :current="pagination.currentPage"
+              :total="pagination.totalPages"
+              :visible="5"
+            />
+            <div
+              v-show="pagination.totalPages > 1"
+              class="products__show-on-page"
             >
-              <SfSelectOption
-                v-for="option in pagination.pageOptions"
-                :key="option"
-                :value="option"
-                class="products__items-per-page__option"
+              <span class="products__show-on-page__label">Show on page:</span>
+              <SfSelect
+                :value="pagination.itemsPerPage.toString()"
+                class="products__items-per-page"
+                @input="th.changeItemsPerPage"
               >
-                {{ option }}
-              </SfSelectOption>
-            </SfSelect>
-          </div>
+                <SfSelectOption
+                  v-for="option in pagination.pageOptions"
+                  :key="option"
+                  :value="option"
+                  class="products__items-per-page__option"
+                >
+                  {{ option }}
+                </SfSelectOption>
+              </SfSelect>
+            </div> -->
         </div>
       </SfLoader>
     </div>
-    <SfSidebar
+    <!-- <SfSidebar
       :visible="isFilterSidebarOpen"
       title="Filters"
       class="sidebar-filters"
@@ -347,59 +361,60 @@
           >
         </div>
       </template>
-    </SfSidebar>
+    </SfSidebar> -->
   </div>
 </template>
 
 <script type="module">
 import {
-  SfSidebar,
   SfButton,
   SfIcon,
   SfHeading,
-  SfFilter,
-  SfProductCard,
-  SfProductCardHorizontal,
-  SfPagination,
-  SfAccordion,
-  SfSelect,
-  SfBreadcrumbs,
   SfLoader,
-  SfColor,
-  SfProperty,
-  SfAddToCart,
-  SfLink,
-  SfImage
+  SfImage,
+  // SfSidebar,
+  // SfFilter,
+  // // SfProductCard,
+  // SfProductCardHorizontal,
+  // SfPagination,
+  // SfAccordion,
+  // SfSelect,
+  // SfBreadcrumbs,
+  // SfColor,
+  // SfProperty,
+  // SfAddToCart,
+  // SfLink,
 } from '@storefront-ui/vue';
 import { computed, onMounted, ref } from '@nuxtjs/composition-api';
 import {
   useCart,
   productGetters,
   useFacet,
-  facetGetters
+  facetGetters,
 } from '@vue-storefront/shopify';
 import { useUiHelpers, useUiState, useUiNotification } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
+import SfProductCard from '~/components/SfProductCard/SfProductCard.vue';
 
 export default {
   components: {
     SfButton,
-    SfSidebar,
     SfIcon,
-    SfFilter,
-    SfProductCard,
-    SfProductCardHorizontal,
-    SfPagination,
-    SfAccordion,
-    SfSelect,
-    SfBreadcrumbs,
-    SfLoader,
-    SfColor,
     SfHeading,
-    SfProperty,
-    SfAddToCart,
-    SfLink,
-    SfImage
+    SfImage,
+    SfProductCard,
+    SfLoader,
+    // SfSidebar,
+    // SfFilter,
+    // SfProductCardHorizontal,
+    // SfPagination,
+    // SfAccordion,
+    // SfSelect,
+    // SfBreadcrumbs,
+    // SfColor,
+    // SfProperty,
+    // SfAddToCart,
+    // SfLink,
   },
   transition: 'fade',
   mounted() {
@@ -445,25 +460,29 @@ export default {
       addItemToCart,
       isInCart,
       isFacetColor,
-      toggleCategoryGridView
+      toggleCategoryGridView,
     };
   },
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   data() {
     return {
-      breadcrumbs: [
-        {
-          text: 'Home',
-          link: '/'
-        },
-        {
-          text: this.removeSpaceFromText(this.$route.params.slug_1),
-          link: '#'
-        }
-      ]
+      // breadcrumbs: [
+      //   {
+      //     text: 'Home',
+      //     link: '/',
+      //   },
+      //   {
+      //     text: this.removeSpaceFromText(this.$route.params.slug_1),
+      //     link: '#',
+      //   },
+      // ],
     };
   },
+  computed: {},
   methods: {
+    showBadge(productStatus) {
+      return productStatus.totalInventory > 0 ? null : 'Preorder';
+    },
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     handleAddToCart(productObj) {
       this.addItemToCart(productObj).then(() => {
@@ -472,7 +491,7 @@ export default {
           message: 'Product has been successfully added to cart !',
           type: 'success',
           title: 'Product added!',
-          icon: 'check'
+          icon: 'check',
         });
       });
     },
@@ -484,8 +503,8 @@ export default {
         frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
       }
       return frags.join(' ');
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -504,202 +523,29 @@ export default {
       padding: 0;
     }
   }
-}
-.breadcrumbs {
-  margin: var(--spacer-base) auto var(--spacer-lg);
-}
-.navbar {
-  position: relative;
-  display: flex;
-  border: 1px solid var(--c-light);
-  border-width: 0 0 1px 0;
-  @include for-desktop {
-    border-width: 1px 0 1px 0;
-  }
-  &.section {
-    padding: var(--spacer-sm);
-    @include for-desktop {
-      padding: 0;
-    }
-  }
-  &__aside,
-  &__main {
-    display: flex;
-    align-items: center;
-    padding: var(--spacer-sm) 0;
-  }
-  &__aside {
-    flex: 0 0 15%;
-    padding: var(--spacer-sm) var(--spacer-sm);
-    border: 1px solid var(--c-light);
-    border-width: 0 1px 0 0;
-  }
-  &__main {
-    flex: 1;
-    padding: 0;
-    justify-content: space-between;
-    @include for-desktop {
-      padding: var(--spacer-xs) var(--spacer-xl);
-    }
-  }
-  &__title {
-    --heading-title-font-weight: var(--font-weight--semibold);
-    --heading-title-font-size: var(--font-size--xl);
-  }
-  &__filters-icon {
-    margin: 0 0 0 var(--spacer-xs);
-    order: 1;
-    @include for-desktop {
-      margin: 0 var(--spacer-xs) 0 0;
-      order: 0;
-    }
-  }
-  &__filters-button {
-    display: flex;
-    align-items: center;
-    --button-font-size: var(--font-size--base);
-    --button-text-decoration: none;
-    --button-color: var(--c-link);
-    --button-font-weight: var(--font-weight--normal);
-    @include for-mobile {
-      --button-font-weight: var(--font-weight--medium);
-      order: 2;
-    }
-    svg {
-      fill: var(--c-text-muted);
-      transition: fill 150ms ease;
-    }
-    &:hover {
-      svg {
-        fill: var(--c-primary);
-      }
-    }
-  }
-  &__label {
-    font-family: var(--font-family--secondary);
-    font-weight: var(--font-weight--normal);
-    color: var(--c-text-muted);
-    @include for-desktop {
-      color: var(--c-link);
-      margin: 0 var(--spacer-2xs) 0 0;
-    }
-  }
-  &__select {
-    --select-width: 220px;
-    --select-padding: 0;
-    --select-height: auto;
-    --select-selected-padding: 0 var(--spacer-lg) 0 var(--spacer-2xs);
-    --select-margin: 0;
-    --select-option-font-size: var(--font-size-sm);
-    --select-error-message-height: 0;
-    ::v-deep .sf-select__dropdown {
-      font-size: var(--font-size-sm);
-      font-family: var(--font-family--secondary);
-      font-weight: var(--font-weight--light);
-      margin: 0;
-    }
-    ::v-deep .sf-select__placeholder {
-      --select-option-font-size: var(--font-size-sm);
-    }
-  }
-  &__sort {
-    display: flex;
-    align-items: center;
-    margin: 0 auto 0 var(--spacer-2xl);
-  }
-  &__counter {
-    font-family: var(--font-family--secondary);
-    order: 1;
-    @include for-desktop {
-      margin: auto 0 auto auto;
-      order: 0;
-    }
-  }
-  &__view {
-    display: flex;
-    align-items: center;
-    order: 0;
-    @include for-desktop {
-      margin: 0 0 0 var(--spacer-2xl);
-      order: 0;
-    }
-    &-icon {
-      cursor: pointer;
-      margin: 0 var(--spacer-base) 0 0;
-      &:last-child {
-        margin: 0;
-      }
-    }
-    &-label {
-      margin: 0 var(--spacer-sm) 0 0;
-      font: var(--font-weight--normal) var(--font-size--base) / 1.6
-        var(--font-family--secondary);
-      text-decoration: none;
-      color: var(--c-link);
-    }
-  }
-}
-.sort-by {
-  flex: unset;
-  width: 11.875rem;
-}
-.main {
   display: flex;
 }
-.sidebar {
-  flex: 0 0 15%;
-  padding: var(--spacer-sm);
-  border: 1px solid var(--c-light);
-  border-width: 0 1px 0 0;
-}
-.sidebar-filters {
-  --sidebar-title-display: none;
-  --sidebar-top-padding: 0;
-  @include for-desktop {
-    --sidebar-content-padding: 0 var(--spacer-xl);
-    --sidebar-bottom-padding: 0 var(--spacer-xl);
-  }
-}
-.list {
-  --menu-item-font-size: var(--font-size--sm);
-  &__item {
-    &:not(:last-of-type) {
-      --list-item-margin: 0 0 var(--spacer-sm) 0;
-    }
 
-    .nuxt-link-exact-active {
-      text-decoration: underline;
-    }
-  }
-}
 .products {
   box-sizing: border-box;
   flex: 1;
   margin: 0;
-  &__grid {
-    justify-content: space-between;
-    @include for-desktop {
-      justify-content: flex-start;
-    }
-  }
   &__grid,
   &__list {
     display: flex;
     flex-wrap: wrap;
   }
   &__product-card {
-    --product-card-title-margin: var(--spacer-base) 0 0 0;
     --product-card-title-font-weight: var(--font-weight--medium);
     --product-card-title-margin: var(--spacer-xs) 0 0 0;
-    flex: 1 1 50%;
+    --product-card-max-width: none;
+    // flex: 1 1 50%;
     @include for-desktop {
       --product-card-title-font-weight: var(--font-weight--normal);
       --product-card-add-button-bottom: var(--spacer-base);
       --product-card-title-margin: var(--spacer-sm) 0 0 0;
+      --product-card-max-width: none;
     }
-  }
-  &__product-card-horizontal {
-    flex: 0 0 100%;
   }
   &__slide-enter {
     opacity: 0;
@@ -709,21 +555,17 @@ export default {
     transition: all 0.2s ease;
     transition-delay: calc(0.1s * var(--index));
   }
+  &__grid {
+    margin: 30px auto;
+    width: 100%;
+    display: grid;
+    /* Define Auto Row size */
+    // grid-auto-rows: 100px;
+    /*Define our columns */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 32px;
+  }
   @include for-desktop {
-    &__grid {
-      margin: var(--spacer-sm) 0 0 var(--spacer-sm);
-    }
-    &__pagination {
-      display: flex;
-      justify-content: flex-start;
-      margin: var(--spacer-xl) 0 0 0;
-    }
-    &__product-card-horizontal {
-      margin: var(--spacer-lg) 0;
-    }
-    &__product-card {
-      flex: 1 1 20%;
-    }
     &__list {
       margin: 0 0 0 var(--spacer-sm);
     }
@@ -737,71 +579,29 @@ export default {
       font-size: var(--font-size--sm);
     }
   }
+  &__badge {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+
+    &-hide {
+      display: none;
+    }
+
+    &-status {
+      width: 140px;
+      height: 111px;
+      display: flex;
+      background-color: #66ff00;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }
 .loading {
   margin: var(--spacer-3xl) auto;
   @include for-desktop {
     margin-top: 6.25rem;
-  }
-}
-::v-deep .sf-sidebar__aside {
-  --sidebar-z-index: 1000;
-}
-.filters {
-  &__title {
-    --heading-title-font-size: var(--font-size--xl);
-    margin: var(--spacer-xl) 0 var(--spacer-base) 0;
-    &:first-child {
-      margin: calc(var(--spacer-xl) + var(--spacer-base)) 0 var(--spacer-xs) 0;
-    }
-  }
-  &__colors {
-    display: flex;
-  }
-  &__color {
-    margin: var(--spacer-xs) var(--spacer-xs) var(--spacer-xs) 0;
-  }
-  &__chosen {
-    color: var(--c-text-muted);
-    font-weight: var(--font-weight--normal);
-    font-family: var(--font-family--secondary);
-    position: absolute;
-    right: var(--spacer-xl);
-  }
-  &__item {
-    --radio-container-padding: 0 var(--spacer-sm) 0 var(--spacer-xl);
-    --radio-background: transparent;
-    --filter-label-color: var(--c-secondary-variant);
-    --filter-count-color: var(--c-secondary-variant);
-    --checkbox-padding: 0 var(--spacer-sm) 0 var(--spacer-xl);
-    padding: var(--spacer-sm) 0;
-    border-bottom: 1px solid var(--c-light);
-    &:last-child {
-      border-bottom: 0;
-    }
-    @include for-desktop {
-      --checkbox-padding: 0;
-      margin: var(--spacer-sm) 0;
-      border: 0;
-      padding: 0;
-    }
-  }
-  &__accordion-item {
-    --accordion-item-content-padding: 0;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-    width: 100vw;
-  }
-  &__buttons {
-    margin: var(--spacer-sm) 0;
-  }
-  &__button-clear {
-    --button-background: var(--c-light);
-    --button-color: var(--c-dark-variant);
-    margin: var(--spacer-xs) 0 0 0;
   }
 }
 </style>

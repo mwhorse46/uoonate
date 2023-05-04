@@ -108,6 +108,26 @@ body {
 .subscribe-email input {
   color: white;
 }
+
+.cookie__floating {
+  max-width: 100%;
+  line-height: 0;
+}
+
+.cookie__floating__buttons {
+  float: right;
+  width: 50%;
+}
+
+.cookie__floating__buttons__button--accept {
+  background: #409343;
+  color: #fff;
+}
+
+.cookie__floating__buttons__button--decline {
+  background: #409343 !important;
+  color: #fff !important;
+}
 // .g-recaptcha > * {
 //   width: 100% !important;
 // }

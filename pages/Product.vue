@@ -6,7 +6,7 @@
     >    
       <div id="product">
         <div class="product">
-          <button @click="debugAlert(product)">Click me</button>
+          <!--<button @click="debugAlert(product)">Click me</button>-->
           <SfHero
             :style="{
               width: '500px',

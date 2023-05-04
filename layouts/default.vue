@@ -28,6 +28,37 @@
         <nuxt :key="route.fullPath" />
       </div>
     </div>
+
+    <vue-cookie-accept-decline
+      :debug="false"
+      :disableDecline="false"
+      :showPostponeButton="false"
+      @clicked-accept="cookieClickedAccept"
+      @clicked-decline="cookieClickedDecline"
+      @clicked-postpone="cookieClickedPostpone"
+      @removed-cookie="cookieRemovedCookie"
+      @status="cookieStatus"
+      elementId="myPanel1"
+      position="bottom-left"
+      ref="myPanel1"
+      transitionName="slideFromBottom"
+      type="floating"
+    >
+      <!-- Optional -->
+      <template #postponeContent>&times;</template>
+
+      <!-- Optional -->
+      <template #message>
+        <p class="cookie-banner-title">We use cookies to ensure you get the best experience on our website.</p>
+        <a href="https://cookiesandyou.com/" target="_blank">Learn More...</a>
+      </template>
+
+      <!-- Optional -->
+      <template #declineContent>Deny</template>
+
+      <!-- Optional -->
+      <template #acceptContent>Agree</template>
+    </vue-cookie-accept-decline>
   </div>
 </template>
 
@@ -49,6 +80,8 @@ import {
   useContext,
 } from "@nuxtjs/composition-api";
 import LoadWhenVisible from "~/components/utils/LoadWhenVisible";
+import VueCookieAcceptDecline from 'vue-cookie-accept-decline';
+import 'vue-cookie-accept-decline/dist/vue-cookie-accept-decline.css';
 export default {
   name: "DefaultLayout",
   components: {
@@ -68,6 +101,7 @@ export default {
     Notification: () =>
       import(/* webpackPrefetch: true */ "~/components/Notification"),
     LoadWhenVisible,
+    VueCookieAcceptDecline
   },
   computed: {
     color() {
@@ -102,6 +136,38 @@ export default {
       route,
     };
   },
+  data () {
+    return {
+      status: null,
+    };
+  },
+  methods: {
+    cookieStatus (status) {
+      console.log('status: ' + status);
+      this.status = status;
+    },
+    cookieClickedAccept () {
+      console.log('here in accept');
+      this.status = 'accept';
+    },
+    cookieClickedDecline () {
+      console.log('here in decline');
+      this.status = 'decline';
+    },
+    cookieClickedPostpone () {
+      console.log('here in postpone');
+      this.status = 'postpone';
+    },
+    cookieRemovedCookie () {
+      console.log('here in cookieRemoved');
+      this.status = null;
+      this.$refs.myPanel1.init();
+    },
+    removeCookie () {
+      console.log('Cookie removed');
+      this.$refs.myPanel1.removeCookie();
+    },
+  }
 };
 </script>
 
@@ -121,6 +187,11 @@ export default {
 .no-scroll {
   overflow: hidden;
   height: 100vh;
+}
+
+.cookie-banner-title {
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 // Reset CSS

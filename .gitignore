@@ -1,6 +1,6 @@
 lib
 server
-middleware.config.js
+# middleware.config.js
 .nuxt
 _theme
 node_modules
@@ -8,6 +8,7 @@ tests
 .history
 package-json.lock
 sw.js
+dist
 .env
 # Logs
 npm-debug.log*
@@ -16,7 +17,7 @@ yarn-error.log*
 lerna-debug.log*
 
 # NPM config
-.npmrc
+# .npmrc
 
 # Yarn Integrity file
 .yarn-integrity
